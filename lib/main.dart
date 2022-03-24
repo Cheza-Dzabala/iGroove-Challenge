@@ -4,19 +4,22 @@ import 'package:code_challenge/constants.dart';
 import 'package:code_challenge/expanding_container.dart';
 import 'package:code_challenge/reorderable_grid_view/reorderable_grid_item.dart';
 import 'package:code_challenge/reorderable_grid_view/reorderable_grid_view.dart';
+import 'package:code_challenge/streams/timer_stream.dart';
 import 'package:flutter/material.dart';
 
 void main() {
   runApp(IGrooveCodeChallenge());
 }
 
-// Get scroll controller as a parameter. Position all the widgets in the list down by 20 pixels.
-
 class IGrooveCodeChallenge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: CodeChallenge(title: 'iGroove CodeChallenge'),
+      home: CodeChallenge(
+          title: 'iGroove CodeChallenge',
+          scrollUpdateTrigger: (ScrollController? controller) {
+            timerStream.listen((event) {});
+          }),
       debugShowCheckedModeBanner: false,
     );
   }
@@ -35,9 +38,12 @@ class CodeChallenge extends StatefulWidget {
 
 class _CodeChallengeState extends State<CodeChallenge> {
   ScrollController? _scrollController;
+  ValueNotifier<double> contentHeight = ValueNotifier<double>(0);
   List<int?>? savedOrder;
   bool _showExample = true;
+  int flexingOrderNumber = 4;
 
+  List<ReorderableGridItem> items = cashboardItems;
   @override
   void initState() {
     _initScrollController();
@@ -103,9 +109,7 @@ class _CodeChallengeState extends State<CodeChallenge> {
                   savedOrder =
                       newOrderedList.map((e) => e!.orderNumber).toList();
                 },
-                children: cashboardItems
-                    .map<ReorderableGridItem>((e) => e as ReorderableGridItem)
-                    .toList(),
+                children: items.map((e) => e).toList(),
               ),
       ),
       floatingActionButton: FloatingActionButton(

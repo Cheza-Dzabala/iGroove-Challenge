@@ -2,7 +2,7 @@ import 'package:code_challenge/expanding_container.dart';
 import 'package:code_challenge/reorderable_grid_view/reorderable_grid_item.dart';
 import 'package:flutter/material.dart';
 
-List<Widget> cashboardItems = [
+List<ReorderableGridItem> cashboardItems = [
   ReorderableGridItem(
     orderNumber: 1,
     widthFlex: 1,
